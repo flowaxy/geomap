@@ -199,4 +199,48 @@ class GeoMapSvgGenerator
 
         return $svg;
     }
+
+    /**
+     * Generate the SVG string containing the map and markers.
+     *
+     * @param array $markers Optional: replace the markers for this generation
+     * @return string SVG code
+     */
+
+    public function generateSvg(array $markers = []): string
+    {
+        if (!empty($markers)) {
+            $this->markers = $markers;
+        }
+
+        $svg = "<svg viewBox='0 0 {$this->width} {$this->height}' xmlns='http://www.w3.org/2000/svg'>";
+
+        foreach ($this->geojson['features'] as $feature) {
+            $coords = $feature['geometry']['coordinates'];
+            $type = $feature['geometry']['type'];
+
+            $name = $feature['properties']["name:{$this->language}"]
+                ?? $feature['properties']['name']
+                ?? '—';
+
+            $path = '';
+            if ($type === 'Polygon') {
+                $path = $this->renderPolygon($coords);
+            } elseif ($type === 'MultiPolygon') {
+                foreach ($coords as $poly) {
+                    $path .= $this->renderPolygon($poly) . ' ';
+                }
+            }
+
+            $tooltip = $this->showTooltips ? "<title>" . htmlspecialchars($name) . "</title>" : '';
+            $svg .= "<path class='region' d='" . trim($path) . "' fill-rule='evenodd'>$tooltip</path>";
+        }
+
+        foreach ($this->markers as $m) {
+            $svg .= $this->renderMarker($m);
+        }
+
+        $svg .= '</svg>';
+        return $svg;
+    }
 }
