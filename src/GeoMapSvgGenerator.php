@@ -54,4 +54,11 @@ class GeoMapSvgGenerator
      */
 
     private bool $showTooltips;
+
+    /**
+     * Language code for region names (e.g. 'uk', 'en', etc.)
+     * @var string
+     */
+
+    private string $language;
 }
