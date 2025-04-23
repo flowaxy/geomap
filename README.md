@@ -57,7 +57,7 @@ You can download GeoJSON files for countries, regions, or the entire world from:
 
 For Ukraine specifically, you can try:
 
-- https://github.com/deldersveld/topojson/blob/master/countries/ukraine/ukraine-regions.json
+- https://github.com/flowaxy/GeoJSON/blob/main/countries/ukraine.geojson
 - https://mapshaper.org/ to convert or simplify GeoJSON files
 
 Make sure your file contains valid GeoJSON structure with features and geometry.
