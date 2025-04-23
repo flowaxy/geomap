@@ -68,4 +68,37 @@ class GeoMapSvgGenerator
      */
 
     private array $geoBounds;
+
+    /**
+     * GeoMapSvgGenerator constructor.
+     *
+     * @param string|array $geojson Path to GeoJSON file or decoded array
+     * @param array $markers Array of custom markers
+     * @param int $width SVG width
+     * @param int $height SVG height
+     * @param bool $showTooltips Whether to show region names as tooltips
+     * @param string $language Language code for region names
+     */
+
+    public function __construct(
+        string|array $geojson,
+        array $markers = [],
+        int $width = 800,
+        int $height = 600,
+        bool $showTooltips = true,
+        string $language = 'uk'
+    ) {
+        $this->geojson = is_array($geojson) ? $geojson : json_decode(file_get_contents($geojson), true);
+
+        if (!$this->geojson || !isset($this->geojson['features'])) {
+            throw new \InvalidArgumentException("Invalid GeoJSON data.");
+        }
+
+        $this->markers = $markers;
+        $this->width = $width;
+        $this->height = $height;
+        $this->showTooltips = $showTooltips;
+        $this->language = $language;
+        $this->geoBounds = $this->calculateGeoBounds();
+    }
 }
