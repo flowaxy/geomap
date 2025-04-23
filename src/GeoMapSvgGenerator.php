@@ -40,4 +40,11 @@ class GeoMapSvgGenerator
      */
 
     private int $width;
+
+    /**
+     * Height of the generated SVG.
+     * @var int
+     */
+
+    private int $height;
 }
