@@ -164,4 +164,39 @@ class GeoMapSvgGenerator
         }
         return trim($path);
     }
+
+    /**
+     * Internal: Render a marker as SVG (circle, icon, or label).
+     *
+     * @param array $m Marker data
+     * @return string SVG element
+     */
+    
+    private function renderMarker(array $m): string
+    {
+        if (!isset($m['lat'], $m['lng'])) return '';
+
+        [$x, $y] = $this->latLngToSvg($m['lat'], $m['lng']);
+        $classes = ['marker'];
+        if (!empty($m['type'])) $classes[] = preg_replace('/[^a-z0-9\-_]/i', '', $m['type']);
+        if (!empty($m['class'])) $classes[] = $m['class'];
+        $classAttr = implode(' ', array_unique($classes));
+        $title = htmlspecialchars($m['name'] ?? '');
+        $svg = '';
+
+        if (!empty($m['icon'])) {
+            $icon = htmlspecialchars($m['icon']);
+            $svg .= "<text x=\"$x\" y=\"$y\" class=\"$classAttr icon\" text-anchor=\"middle\" dominant-baseline=\"central\">$icon<title>$title</title></text>";
+        } elseif (isset($m['count'])) {
+            $svg .= "<circle cx=\"$x\" cy=\"$y\" r=\"7\" class=\"$classAttr\"><title>$title</title></circle>";
+            $svg .= "<text x=\"$x\" y=\"" . ($y + 3) . "\" class=\"label\">" . htmlspecialchars((string)$m['count']) . "</text>";
+        } elseif (!empty($m['label'])) {
+            $label = htmlspecialchars($m['label']);
+            $svg .= "<text x=\"$x\" y=\"$y\" class=\"$classAttr\" text-anchor=\"middle\" dominant-baseline=\"central\">$label<title>$title</title></text>";
+        } else {
+            $svg .= "<circle class=\"$classAttr\" cx=\"$x\" cy=\"$y\" r=\"6\" data-name=\"$title\"></circle>";
+        }
+
+        return $svg;
+    }
 }
