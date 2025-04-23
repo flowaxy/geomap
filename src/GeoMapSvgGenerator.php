@@ -12,4 +12,11 @@ namespace Flowaxy;
 
 class GeoMapSvgGenerator
 {
+
+    /**
+     * GeoJSON data (as array).
+     * @var array
+     */
+
+    private array $geojson;
 }
