@@ -127,4 +127,20 @@ class GeoMapSvgGenerator
         }
         return [$minLat, $maxLat, $minLng, $maxLng];
     }
+
+    /**
+     * Convert geographic coordinates (lat/lng) to SVG coordinates (x/y).
+     *
+     * @param float $lat
+     * @param float $lng
+     * @return array [x, y]
+     */
+
+    public function latLngToSvg(float $lat, float $lng): array
+    {
+        [$minLat, $maxLat, $minLng, $maxLng] = $this->geoBounds;
+        $x = ($lng - $minLng) / ($maxLng - $minLng) * $this->width;
+        $y = ($maxLat - $lat) / ($maxLat - $minLat) * $this->height;
+        return [$x, $y];
+    }
 }
