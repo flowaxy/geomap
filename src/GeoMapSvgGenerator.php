@@ -47,4 +47,11 @@ class GeoMapSvgGenerator
      */
 
     private int $height;
+
+    /**
+     * Whether to show tooltips on hover.
+     * @var bool
+     */
+
+    private bool $showTooltips;
 }
