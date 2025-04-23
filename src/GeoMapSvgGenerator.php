@@ -101,4 +101,30 @@ class GeoMapSvgGenerator
         $this->language = $language;
         $this->geoBounds = $this->calculateGeoBounds();
     }
+
+    /**
+     * Internal: Calculate min/max lat/lng from the GeoJSON features.
+     *
+     * @return array [$minLat, $maxLat, $minLng, $maxLng]
+     */
+
+    private function calculateGeoBounds(): array
+    {
+        $minLat = $minLng = INF;
+        $maxLat = $maxLng = -INF;
+        foreach ($this->geojson['features'] as $f) {
+            $coords = $f['geometry']['coordinates'];
+            $type = $f['geometry']['type'];
+            $polys = $type === 'Polygon' ? [$coords] : $coords;
+            foreach ($polys as $poly) {
+                foreach ($poly[0] as [$lng, $lat]) {
+                    $minLat = min($minLat, $lat);
+                    $maxLat = max($maxLat, $lat);
+                    $minLng = min($minLng, $lng);
+                    $maxLng = max($maxLng, $lng);
+                }
+            }
+        }
+        return [$minLat, $maxLat, $minLng, $maxLng];
+    }
 }
