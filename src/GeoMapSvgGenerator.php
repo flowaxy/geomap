@@ -143,4 +143,25 @@ class GeoMapSvgGenerator
         $y = ($maxLat - $lat) / ($maxLat - $minLat) * $this->height;
         return [$x, $y];
     }
+
+    /**
+     * Internal: Convert polygon coordinates to an SVG path string.
+     *
+     * @param array $polygon GeoJSON polygon coordinates
+     * @return string SVG path string
+     */
+
+    private function renderPolygon(array $polygon): string
+    {
+        $path = '';
+        foreach ($polygon as $ring) {
+            $path .= 'M ';
+            foreach ($ring as [$lng, $lat]) {
+                [$x, $y] = $this->latLngToSvg($lat, $lng);
+                $path .= "$x,$y ";
+            }
+            $path .= 'Z ';
+        }
+        return trim($path);
+    }
 }
