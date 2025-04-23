@@ -61,4 +61,11 @@ class GeoMapSvgGenerator
      */
 
     private string $language;
+
+    /**
+     * Calculated map bounds from GeoJSON data.
+     * @var array
+     */
+
+    private array $geoBounds;
 }
