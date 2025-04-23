@@ -33,4 +33,11 @@ class GeoMapSvgGenerator
      */
 
     private array $markers;
+
+    /**
+     * Width of the generated SVG.
+     * @var int
+     */
+
+    private int $width;
 }
