@@ -19,4 +19,18 @@ class GeoMapSvgGenerator
      */
 
     private array $geojson;
+
+    /**
+     * List of markers to render on the map.
+     * Each marker may contain:
+     *  - lat (float): Latitude
+     *  - lng (float): Longitude
+     *  - type (string): Marker type (for CSS class)
+     *  - icon (string): Emoji or symbol to show instead of a circle
+     *  - count (int): Number to show below the marker
+     *  - name (string): Tooltip/title
+     * @var array
+     */
+
+    private array $markers;
 }
